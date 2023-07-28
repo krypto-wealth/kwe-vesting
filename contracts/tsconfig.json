@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "es2018",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "declaration": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["*"]
+    }
+  },
+  "include": [
+    "./scripts",
+    "./test",
+    "./typechain",
+    "./deploy",
+    "./gotbit-tools",
+    "env.d.ts",
+    "hardhat.config.ts",
+    "utils/parse_allocations.ts",
+    "test/.Vesting.test.ts"
+  ],
+  "files": ["./hardhat.config.ts"]
+}

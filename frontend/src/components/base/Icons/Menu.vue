@@ -1,0 +1,42 @@
+<template>
+  <BaseIcon v-bind="props">
+    <svg
+      width="40"
+      height="40"
+      viewBox="0 0 40 40"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M5 20H35"
+        stroke="#29221F"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M5 10H35"
+        stroke="#29221F"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M5 30H35"
+        stroke="#29221F"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </BaseIcon>
+</template>
+
+<script lang="ts" setup>
+import BaseIcon from '@/components/gotbit-ui-kit/GIcon.vue'
+import type { IconProps } from '@/components/gotbit-ui-kit/GIcon.vue'
+
+export interface IIcon extends IconProps {}
+
+const props = defineProps<IIcon>()
+</script>

@@ -1,0 +1,74 @@
+/*==Font==*/
+$font: "Inter", sans-serif;
+
+
+/*==Colors==*/
+$primary-color: #007bff;
+$white-color: #ffffff;
+$error-color: #ee5a51;
+$success-color: #26ce87;
+$warning-color: #ffb524;
+
+$primary-light-color: hsl(211, 100%, 70%);
+$primary-dark-color: hsl(211, 100%, 30%);
+$primary-press-color: hsl(211, 100%, 20%);
+$primary-disabled-color: hsl(211, 50%, 50%);
+
+$secondary-color: #C9D2E7;
+
+$black-color: hsl(0, 0%, 0%);
+$color-black-text: #29221F;
+$gray-dark-color: hsl(0, 0%, 50%);
+$gray-color: hsl(0, 0%, 47%);
+$gray-light-color: hsl(0, 0%, 80%);
+$gray-extra-light-color: hsl(0, 0%, 85%);
+
+
+/*==Adaptive==*/
+@mixin for-size($size) {
+    @if $size == sm {
+        @media (min-width: 640px) {
+            @content;
+        }
+    } @else if $size == md {
+        @media (min-width: 768px) {
+            @content;
+        }
+    } @else if $size == lg {
+        @media (min-width: 1024px) {
+            @content;
+        }
+    }
+}
+
+@mixin size-box($size) {
+    width: $size;
+    height: $size;
+}
+
+/*==Functions==*/
+@mixin size-box($size) {
+    width: $size;
+    height: $size;
+}
+@mixin max-width($width) {
+    max-width: $width;
+    width: 100%;
+}
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+@mixin py($size) {
+    padding: {
+        top: $size;
+        bottom: $size;
+    }
+}
+@mixin px($size) {
+    padding: {
+        left: $size;
+        right: $size;
+    }
+}
