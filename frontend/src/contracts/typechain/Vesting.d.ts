@@ -13,841 +13,746 @@ import {
   ContractTransaction,
   Overrides,
   CallOverrides,
-} from "ethers";
-import { BytesLike } from "@ethersproject/bytes";
-import { Listener, Provider } from "@ethersproject/providers";
-import { FunctionFragment, EventFragment, Result } from "@ethersproject/abi";
-import type { TypedEventFilter, TypedEvent, TypedListener } from "./common";
+} from 'ethers'
+import { BytesLike } from '@ethersproject/bytes'
+import { Listener, Provider } from '@ethersproject/providers'
+import { FunctionFragment, EventFragment, Result } from '@ethersproject/abi'
+import type { TypedEventFilter, TypedEvent, TypedListener } from './common'
 
 interface VestingInterface extends ethers.utils.Interface {
   functions: {
-    "ROOT()": FunctionFragment;
-    "claimAll(uint256[],bytes32[],uint256)": FunctionFragment;
-    "claimSingle(uint256,uint256[],bytes32[],uint256)": FunctionFragment;
-    "claimed(address,uint256)": FunctionFragment;
-    "getAllocations()": FunctionFragment;
-    "getRound(uint256)": FunctionFragment;
-    "getRounds()": FunctionFragment;
-    "init(uint256,string,bytes32,tuple[])": FunctionFragment;
-    "owner()": FunctionFragment;
-    "renounceOwnership()": FunctionFragment;
-    "resetROOT(bytes32,string)": FunctionFragment;
-    "roundLength()": FunctionFragment;
-    "rounds(uint256)": FunctionFragment;
-    "startTimestamp()": FunctionFragment;
-    "token()": FunctionFragment;
-    "transferOwnership(address)": FunctionFragment;
-    "unlocked(uint256,uint256)": FunctionFragment;
-    "withdraw(address,uint256)": FunctionFragment;
-  };
+    'ROOT()': FunctionFragment
+    'claimAll(uint256[],bytes32[],uint256)': FunctionFragment
+    'claimSingle(uint256,uint256[],bytes32[],uint256)': FunctionFragment
+    'claimed(address,uint256)': FunctionFragment
+    'getAllocations()': FunctionFragment
+    'getRound(uint256)': FunctionFragment
+    'getRounds()': FunctionFragment
+    'init(uint256,string,bytes32,tuple[])': FunctionFragment
+    'owner()': FunctionFragment
+    'renounceOwnership()': FunctionFragment
+    'resetROOT(bytes32,string)': FunctionFragment
+    'roundLength()': FunctionFragment
+    'rounds(uint256)': FunctionFragment
+    'startTimestamp()': FunctionFragment
+    'token()': FunctionFragment
+    'transferOwnership(address)': FunctionFragment
+    'unlocked(uint256,uint256)': FunctionFragment
+    'withdraw(address,uint256)': FunctionFragment
+  }
 
-  encodeFunctionData(functionFragment: "ROOT", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'ROOT', values?: undefined): string
   encodeFunctionData(
-    functionFragment: "claimAll",
-    values: [BigNumberish[], BytesLike[], BigNumberish]
-  ): string;
+    functionFragment: 'claimAll',
+    values: [BigNumberish[], BytesLike[], BigNumberish],
+  ): string
   encodeFunctionData(
-    functionFragment: "claimSingle",
-    values: [BigNumberish, BigNumberish[], BytesLike[], BigNumberish]
-  ): string;
+    functionFragment: 'claimSingle',
+    values: [BigNumberish, BigNumberish[], BytesLike[], BigNumberish],
+  ): string
+  encodeFunctionData(functionFragment: 'claimed', values: [string, BigNumberish]): string
+  encodeFunctionData(functionFragment: 'getAllocations', values?: undefined): string
+  encodeFunctionData(functionFragment: 'getRound', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: 'getRounds', values?: undefined): string
   encodeFunctionData(
-    functionFragment: "claimed",
-    values: [string, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getAllocations",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getRound",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(functionFragment: "getRounds", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "init",
+    functionFragment: 'init',
     values: [
       BigNumberish,
       string,
       BytesLike,
       {
-        name: string;
+        name: string
         periods: {
-          startTimestamp: BigNumberish;
-          duration: BigNumberish;
-          linearUnits: BigNumberish;
-          percentageD: BigNumberish;
-        }[];
-      }[]
-    ]
-  ): string;
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+          startTimestamp: BigNumberish
+          duration: BigNumberish
+          linearUnits: BigNumberish
+          percentageD: BigNumberish
+        }[]
+      }[],
+    ],
+  ): string
+  encodeFunctionData(functionFragment: 'owner', values?: undefined): string
+  encodeFunctionData(functionFragment: 'renounceOwnership', values?: undefined): string
+  encodeFunctionData(functionFragment: 'resetROOT', values: [BytesLike, string]): string
+  encodeFunctionData(functionFragment: 'roundLength', values?: undefined): string
+  encodeFunctionData(functionFragment: 'rounds', values: [BigNumberish]): string
+  encodeFunctionData(functionFragment: 'startTimestamp', values?: undefined): string
+  encodeFunctionData(functionFragment: 'token', values?: undefined): string
+  encodeFunctionData(functionFragment: 'transferOwnership', values: [string]): string
   encodeFunctionData(
-    functionFragment: "renounceOwnership",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "resetROOT",
-    values: [BytesLike, string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "roundLength",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "rounds",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "startTimestamp",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "token", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "transferOwnership",
-    values: [string]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "unlocked",
-    values: [BigNumberish, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "withdraw",
-    values: [string, BigNumberish]
-  ): string;
+    functionFragment: 'unlocked',
+    values: [BigNumberish, BigNumberish],
+  ): string
+  encodeFunctionData(functionFragment: 'withdraw', values: [string, BigNumberish]): string
 
-  decodeFunctionResult(functionFragment: "ROOT", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "claimAll", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "claimSingle",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "claimed", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "getAllocations",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "getRound", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "getRounds", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "init", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "renounceOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "resetROOT", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "roundLength",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "rounds", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "startTimestamp",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "token", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "transferOwnership",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "unlocked", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'ROOT', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'claimAll', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'claimSingle', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'claimed', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'getAllocations', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'getRound', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'getRounds', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'init', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'owner', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'renounceOwnership', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'resetROOT', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'roundLength', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'rounds', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'startTimestamp', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'token', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'transferOwnership', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'unlocked', data: BytesLike): Result
+  decodeFunctionResult(functionFragment: 'withdraw', data: BytesLike): Result
 
   events: {
-    "Claim(uint256,address,string,uint256)": EventFragment;
-    "Initialized(uint8)": EventFragment;
-    "InitializedVesting(uint256,address)": EventFragment;
-    "OwnershipTransferred(address,address)": EventFragment;
-  };
+    'Claim(uint256,address,string,uint256)': EventFragment
+    'Initialized(uint8)': EventFragment
+    'InitializedVesting(uint256,address)': EventFragment
+    'OwnershipTransferred(address,address)': EventFragment
+  }
 
-  getEvent(nameOrSignatureOrTopic: "Claim"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "Initialized"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "InitializedVesting"): EventFragment;
-  getEvent(nameOrSignatureOrTopic: "OwnershipTransferred"): EventFragment;
+  getEvent(nameOrSignatureOrTopic: 'Claim'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'Initialized'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'InitializedVesting'): EventFragment
+  getEvent(nameOrSignatureOrTopic: 'OwnershipTransferred'): EventFragment
 }
 
 export type ClaimEvent = TypedEvent<
   [BigNumber, string, string, BigNumber] & {
-    timestamp: BigNumber;
-    user: string;
-    roundName: string;
-    amount: BigNumber;
+    timestamp: BigNumber
+    user: string
+    roundName: string
+    amount: BigNumber
   }
->;
+>
 
-export type InitializedEvent = TypedEvent<[number] & { version: number }>;
+export type InitializedEvent = TypedEvent<[number] & { version: number }>
 
 export type InitializedVestingEvent = TypedEvent<
   [BigNumber, string] & { timestamp: BigNumber; user: string }
->;
+>
 
 export type OwnershipTransferredEvent = TypedEvent<
   [string, string] & { previousOwner: string; newOwner: string }
->;
+>
 
 export class Vesting extends BaseContract {
-  connect(signerOrProvider: Signer | Provider | string): this;
-  attach(addressOrName: string): this;
-  deployed(): Promise<this>;
+  connect(signerOrProvider: Signer | Provider | string): this
+  attach(addressOrName: string): this
+  deployed(): Promise<this>
 
   listeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter?: TypedEventFilter<EventArgsArray, EventArgsObject>
-  ): Array<TypedListener<EventArgsArray, EventArgsObject>>;
+    eventFilter?: TypedEventFilter<EventArgsArray, EventArgsObject>,
+  ): Array<TypedListener<EventArgsArray, EventArgsObject>>
   off<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
+    listener: TypedListener<EventArgsArray, EventArgsObject>,
+  ): this
   on<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
+    listener: TypedListener<EventArgsArray, EventArgsObject>,
+  ): this
   once<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
+    listener: TypedListener<EventArgsArray, EventArgsObject>,
+  ): this
   removeListener<EventArgsArray extends Array<any>, EventArgsObject>(
     eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
-    listener: TypedListener<EventArgsArray, EventArgsObject>
-  ): this;
+    listener: TypedListener<EventArgsArray, EventArgsObject>,
+  ): this
   removeAllListeners<EventArgsArray extends Array<any>, EventArgsObject>(
-    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>
-  ): this;
+    eventFilter: TypedEventFilter<EventArgsArray, EventArgsObject>,
+  ): this
 
-  listeners(eventName?: string): Array<Listener>;
-  off(eventName: string, listener: Listener): this;
-  on(eventName: string, listener: Listener): this;
-  once(eventName: string, listener: Listener): this;
-  removeListener(eventName: string, listener: Listener): this;
-  removeAllListeners(eventName?: string): this;
+  listeners(eventName?: string): Array<Listener>
+  off(eventName: string, listener: Listener): this
+  on(eventName: string, listener: Listener): this
+  once(eventName: string, listener: Listener): this
+  removeListener(eventName: string, listener: Listener): this
+  removeAllListeners(eventName?: string): this
 
   queryFilter<EventArgsArray extends Array<any>, EventArgsObject>(
     event: TypedEventFilter<EventArgsArray, EventArgsObject>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
-  ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>;
+    toBlock?: string | number | undefined,
+  ): Promise<Array<TypedEvent<EventArgsArray & EventArgsObject>>>
 
-  interface: VestingInterface;
+  interface: VestingInterface
 
   functions: {
-    ROOT(overrides?: CallOverrides): Promise<[string]>;
+    ROOT(overrides?: CallOverrides): Promise<[string]>
 
     claimAll(
       allocations: BigNumberish[],
       proof: BytesLike[],
       targetAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
 
     claimSingle(
       roundId: BigNumberish,
       allocations: BigNumberish[],
       proof: BytesLike[],
       targetAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
 
     claimed(
       user: string,
       id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+      overrides?: CallOverrides,
+    ): Promise<[BigNumber]>
 
-    getAllocations(overrides?: CallOverrides): Promise<[string]>;
+    getAllocations(overrides?: CallOverrides): Promise<[string]>
 
     getRound(
       id: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [
         [
           string,
           ([BigNumber, number, number, BigNumber] & {
-            startTimestamp: BigNumber;
-            duration: number;
-            linearUnits: number;
-            percentageD: BigNumber;
-          })[]
+            startTimestamp: BigNumber
+            duration: number
+            linearUnits: number
+            percentageD: BigNumber
+          })[],
         ] & {
-          name: string;
+          name: string
           periods: ([BigNumber, number, number, BigNumber] & {
-            startTimestamp: BigNumber;
-            duration: number;
-            linearUnits: number;
-            percentageD: BigNumber;
-          })[];
-        }
+            startTimestamp: BigNumber
+            duration: number
+            linearUnits: number
+            percentageD: BigNumber
+          })[]
+        },
       ]
-    >;
+    >
 
-    getRounds(
-      overrides?: CallOverrides
-    ): Promise<
+    getRounds(overrides?: CallOverrides): Promise<
       [
         ([
           string,
           ([BigNumber, number, number, BigNumber] & {
-            startTimestamp: BigNumber;
-            duration: number;
-            linearUnits: number;
-            percentageD: BigNumber;
-          })[]
+            startTimestamp: BigNumber
+            duration: number
+            linearUnits: number
+            percentageD: BigNumber
+          })[],
         ] & {
-          name: string;
+          name: string
           periods: ([BigNumber, number, number, BigNumber] & {
-            startTimestamp: BigNumber;
-            duration: number;
-            linearUnits: number;
-            percentageD: BigNumber;
-          })[];
-        })[]
+            startTimestamp: BigNumber
+            duration: number
+            linearUnits: number
+            percentageD: BigNumber
+          })[]
+        })[],
       ]
-    >;
+    >
 
     init(
       startTimestamp_: BigNumberish,
       leaves_: string,
       root_: BytesLike,
       rounds_: {
-        name: string;
+        name: string
         periods: {
-          startTimestamp: BigNumberish;
-          duration: BigNumberish;
-          linearUnits: BigNumberish;
-          percentageD: BigNumberish;
-        }[];
+          startTimestamp: BigNumberish
+          duration: BigNumberish
+          linearUnits: BigNumberish
+          percentageD: BigNumberish
+        }[]
       }[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
 
-    owner(overrides?: CallOverrides): Promise<[string]>;
+    owner(overrides?: CallOverrides): Promise<[string]>
 
     renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
 
     resetROOT(
       root_: BytesLike,
       leaves_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
 
-    roundLength(overrides?: CallOverrides): Promise<[BigNumber]>;
+    roundLength(overrides?: CallOverrides): Promise<[BigNumber]>
 
     rounds(
       arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[string] & { name: string }>;
+      overrides?: CallOverrides,
+    ): Promise<[string] & { name: string }>
 
-    startTimestamp(overrides?: CallOverrides): Promise<[BigNumber]>;
+    startTimestamp(overrides?: CallOverrides): Promise<[BigNumber]>
 
-    token(overrides?: CallOverrides): Promise<[string]>;
+    token(overrides?: CallOverrides): Promise<[string]>
 
     transferOwnership(
       newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
 
     unlocked(
       id: BigNumberish,
       allocation: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
+      overrides?: CallOverrides,
+    ): Promise<[BigNumber]>
 
     withdraw(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-  };
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<ContractTransaction>
+  }
 
-  ROOT(overrides?: CallOverrides): Promise<string>;
+  ROOT(overrides?: CallOverrides): Promise<string>
 
   claimAll(
     allocations: BigNumberish[],
     proof: BytesLike[],
     targetAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
 
   claimSingle(
     roundId: BigNumberish,
     allocations: BigNumberish[],
     proof: BytesLike[],
     targetAmount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
 
-  claimed(
-    user: string,
-    id: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+  claimed(user: string, id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-  getAllocations(overrides?: CallOverrides): Promise<string>;
+  getAllocations(overrides?: CallOverrides): Promise<string>
 
   getRound(
     id: BigNumberish,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<
     [
       string,
       ([BigNumber, number, number, BigNumber] & {
-        startTimestamp: BigNumber;
-        duration: number;
-        linearUnits: number;
-        percentageD: BigNumber;
-      })[]
+        startTimestamp: BigNumber
+        duration: number
+        linearUnits: number
+        percentageD: BigNumber
+      })[],
     ] & {
-      name: string;
+      name: string
       periods: ([BigNumber, number, number, BigNumber] & {
-        startTimestamp: BigNumber;
-        duration: number;
-        linearUnits: number;
-        percentageD: BigNumber;
-      })[];
+        startTimestamp: BigNumber
+        duration: number
+        linearUnits: number
+        percentageD: BigNumber
+      })[]
     }
-  >;
+  >
 
-  getRounds(
-    overrides?: CallOverrides
-  ): Promise<
+  getRounds(overrides?: CallOverrides): Promise<
     ([
       string,
       ([BigNumber, number, number, BigNumber] & {
-        startTimestamp: BigNumber;
-        duration: number;
-        linearUnits: number;
-        percentageD: BigNumber;
-      })[]
+        startTimestamp: BigNumber
+        duration: number
+        linearUnits: number
+        percentageD: BigNumber
+      })[],
     ] & {
-      name: string;
+      name: string
       periods: ([BigNumber, number, number, BigNumber] & {
-        startTimestamp: BigNumber;
-        duration: number;
-        linearUnits: number;
-        percentageD: BigNumber;
-      })[];
+        startTimestamp: BigNumber
+        duration: number
+        linearUnits: number
+        percentageD: BigNumber
+      })[]
     })[]
-  >;
+  >
 
   init(
     startTimestamp_: BigNumberish,
     leaves_: string,
     root_: BytesLike,
     rounds_: {
-      name: string;
+      name: string
       periods: {
-        startTimestamp: BigNumberish;
-        duration: BigNumberish;
-        linearUnits: BigNumberish;
-        percentageD: BigNumberish;
-      }[];
+        startTimestamp: BigNumberish
+        duration: BigNumberish
+        linearUnits: BigNumberish
+        percentageD: BigNumberish
+      }[]
     }[],
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
 
-  owner(overrides?: CallOverrides): Promise<string>;
+  owner(overrides?: CallOverrides): Promise<string>
 
   renounceOwnership(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
 
   resetROOT(
     root_: BytesLike,
     leaves_: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
 
-  roundLength(overrides?: CallOverrides): Promise<BigNumber>;
+  roundLength(overrides?: CallOverrides): Promise<BigNumber>
 
-  rounds(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+  rounds(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-  startTimestamp(overrides?: CallOverrides): Promise<BigNumber>;
+  startTimestamp(overrides?: CallOverrides): Promise<BigNumber>
 
-  token(overrides?: CallOverrides): Promise<string>;
+  token(overrides?: CallOverrides): Promise<string>
 
   transferOwnership(
     newOwner: string,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
 
   unlocked(
     id: BigNumberish,
     allocation: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
+    overrides?: CallOverrides,
+  ): Promise<BigNumber>
 
   withdraw(
     recipient: string,
     amount: BigNumberish,
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
+    overrides?: Overrides & { from?: string | Promise<string> },
+  ): Promise<ContractTransaction>
 
   callStatic: {
-    ROOT(overrides?: CallOverrides): Promise<string>;
+    ROOT(overrides?: CallOverrides): Promise<string>
 
     claimAll(
       allocations: BigNumberish[],
       proof: BytesLike[],
       targetAmount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
+      overrides?: CallOverrides,
+    ): Promise<void>
 
     claimSingle(
       roundId: BigNumberish,
       allocations: BigNumberish[],
       proof: BytesLike[],
       targetAmount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
+      overrides?: CallOverrides,
+    ): Promise<void>
 
-    claimed(
-      user: string,
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    claimed(user: string, id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-    getAllocations(overrides?: CallOverrides): Promise<string>;
+    getAllocations(overrides?: CallOverrides): Promise<string>
 
     getRound(
       id: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<
       [
         string,
         ([BigNumber, number, number, BigNumber] & {
-          startTimestamp: BigNumber;
-          duration: number;
-          linearUnits: number;
-          percentageD: BigNumber;
-        })[]
+          startTimestamp: BigNumber
+          duration: number
+          linearUnits: number
+          percentageD: BigNumber
+        })[],
       ] & {
-        name: string;
+        name: string
         periods: ([BigNumber, number, number, BigNumber] & {
-          startTimestamp: BigNumber;
-          duration: number;
-          linearUnits: number;
-          percentageD: BigNumber;
-        })[];
+          startTimestamp: BigNumber
+          duration: number
+          linearUnits: number
+          percentageD: BigNumber
+        })[]
       }
-    >;
+    >
 
-    getRounds(
-      overrides?: CallOverrides
-    ): Promise<
+    getRounds(overrides?: CallOverrides): Promise<
       ([
         string,
         ([BigNumber, number, number, BigNumber] & {
-          startTimestamp: BigNumber;
-          duration: number;
-          linearUnits: number;
-          percentageD: BigNumber;
-        })[]
+          startTimestamp: BigNumber
+          duration: number
+          linearUnits: number
+          percentageD: BigNumber
+        })[],
       ] & {
-        name: string;
+        name: string
         periods: ([BigNumber, number, number, BigNumber] & {
-          startTimestamp: BigNumber;
-          duration: number;
-          linearUnits: number;
-          percentageD: BigNumber;
-        })[];
+          startTimestamp: BigNumber
+          duration: number
+          linearUnits: number
+          percentageD: BigNumber
+        })[]
       })[]
-    >;
+    >
 
     init(
       startTimestamp_: BigNumberish,
       leaves_: string,
       root_: BytesLike,
       rounds_: {
-        name: string;
+        name: string
         periods: {
-          startTimestamp: BigNumberish;
-          duration: BigNumberish;
-          linearUnits: BigNumberish;
-          percentageD: BigNumberish;
-        }[];
+          startTimestamp: BigNumberish
+          duration: BigNumberish
+          linearUnits: BigNumberish
+          percentageD: BigNumberish
+        }[]
       }[],
-      overrides?: CallOverrides
-    ): Promise<void>;
+      overrides?: CallOverrides,
+    ): Promise<void>
 
-    owner(overrides?: CallOverrides): Promise<string>;
+    owner(overrides?: CallOverrides): Promise<string>
 
-    renounceOwnership(overrides?: CallOverrides): Promise<void>;
+    renounceOwnership(overrides?: CallOverrides): Promise<void>
 
-    resetROOT(
-      root_: BytesLike,
-      leaves_: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    resetROOT(root_: BytesLike, leaves_: string, overrides?: CallOverrides): Promise<void>
 
-    roundLength(overrides?: CallOverrides): Promise<BigNumber>;
+    roundLength(overrides?: CallOverrides): Promise<BigNumber>
 
-    rounds(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>;
+    rounds(arg0: BigNumberish, overrides?: CallOverrides): Promise<string>
 
-    startTimestamp(overrides?: CallOverrides): Promise<BigNumber>;
+    startTimestamp(overrides?: CallOverrides): Promise<BigNumber>
 
-    token(overrides?: CallOverrides): Promise<string>;
+    token(overrides?: CallOverrides): Promise<string>
 
-    transferOwnership(
-      newOwner: string,
-      overrides?: CallOverrides
-    ): Promise<void>;
+    transferOwnership(newOwner: string, overrides?: CallOverrides): Promise<void>
 
     unlocked(
       id: BigNumberish,
       allocation: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+      overrides?: CallOverrides,
+    ): Promise<BigNumber>
 
     withdraw(
       recipient: string,
       amount: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<void>;
-  };
+      overrides?: CallOverrides,
+    ): Promise<void>
+  }
 
   filters: {
-    "Claim(uint256,address,string,uint256)"(
+    'Claim(uint256,address,string,uint256)'(
       timestamp?: BigNumberish | null,
       user?: string | null,
       roundName?: null,
-      amount?: null
+      amount?: null,
     ): TypedEventFilter<
       [BigNumber, string, string, BigNumber],
       {
-        timestamp: BigNumber;
-        user: string;
-        roundName: string;
-        amount: BigNumber;
+        timestamp: BigNumber
+        user: string
+        roundName: string
+        amount: BigNumber
       }
-    >;
+    >
 
     Claim(
       timestamp?: BigNumberish | null,
       user?: string | null,
       roundName?: null,
-      amount?: null
+      amount?: null,
     ): TypedEventFilter<
       [BigNumber, string, string, BigNumber],
       {
-        timestamp: BigNumber;
-        user: string;
-        roundName: string;
-        amount: BigNumber;
+        timestamp: BigNumber
+        user: string
+        roundName: string
+        amount: BigNumber
       }
-    >;
+    >
 
-    "Initialized(uint8)"(
-      version?: null
-    ): TypedEventFilter<[number], { version: number }>;
+    'Initialized(uint8)'(version?: null): TypedEventFilter<[number], { version: number }>
 
-    Initialized(
-      version?: null
-    ): TypedEventFilter<[number], { version: number }>;
+    Initialized(version?: null): TypedEventFilter<[number], { version: number }>
 
-    "InitializedVesting(uint256,address)"(
+    'InitializedVesting(uint256,address)'(
       timestamp?: BigNumberish | null,
-      user?: string | null
-    ): TypedEventFilter<
-      [BigNumber, string],
-      { timestamp: BigNumber; user: string }
-    >;
+      user?: string | null,
+    ): TypedEventFilter<[BigNumber, string], { timestamp: BigNumber; user: string }>
 
     InitializedVesting(
       timestamp?: BigNumberish | null,
-      user?: string | null
-    ): TypedEventFilter<
-      [BigNumber, string],
-      { timestamp: BigNumber; user: string }
-    >;
+      user?: string | null,
+    ): TypedEventFilter<[BigNumber, string], { timestamp: BigNumber; user: string }>
 
-    "OwnershipTransferred(address,address)"(
+    'OwnershipTransferred(address,address)'(
       previousOwner?: string | null,
-      newOwner?: string | null
-    ): TypedEventFilter<
-      [string, string],
-      { previousOwner: string; newOwner: string }
-    >;
+      newOwner?: string | null,
+    ): TypedEventFilter<[string, string], { previousOwner: string; newOwner: string }>
 
     OwnershipTransferred(
       previousOwner?: string | null,
-      newOwner?: string | null
-    ): TypedEventFilter<
-      [string, string],
-      { previousOwner: string; newOwner: string }
-    >;
-  };
+      newOwner?: string | null,
+    ): TypedEventFilter<[string, string], { previousOwner: string; newOwner: string }>
+  }
 
   estimateGas: {
-    ROOT(overrides?: CallOverrides): Promise<BigNumber>;
+    ROOT(overrides?: CallOverrides): Promise<BigNumber>
 
     claimAll(
       allocations: BigNumberish[],
       proof: BytesLike[],
       targetAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
 
     claimSingle(
       roundId: BigNumberish,
       allocations: BigNumberish[],
       proof: BytesLike[],
       targetAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
 
-    claimed(
-      user: string,
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+    claimed(user: string, id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-    getAllocations(overrides?: CallOverrides): Promise<BigNumber>;
+    getAllocations(overrides?: CallOverrides): Promise<BigNumber>
 
-    getRound(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    getRound(id: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-    getRounds(overrides?: CallOverrides): Promise<BigNumber>;
+    getRounds(overrides?: CallOverrides): Promise<BigNumber>
 
     init(
       startTimestamp_: BigNumberish,
       leaves_: string,
       root_: BytesLike,
       rounds_: {
-        name: string;
+        name: string
         periods: {
-          startTimestamp: BigNumberish;
-          duration: BigNumberish;
-          linearUnits: BigNumberish;
-          percentageD: BigNumberish;
-        }[];
+          startTimestamp: BigNumberish
+          duration: BigNumberish
+          linearUnits: BigNumberish
+          percentageD: BigNumberish
+        }[]
       }[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
 
-    owner(overrides?: CallOverrides): Promise<BigNumber>;
+    owner(overrides?: CallOverrides): Promise<BigNumber>
 
     renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
 
     resetROOT(
       root_: BytesLike,
       leaves_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
 
-    roundLength(overrides?: CallOverrides): Promise<BigNumber>;
+    roundLength(overrides?: CallOverrides): Promise<BigNumber>
 
-    rounds(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
+    rounds(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>
 
-    startTimestamp(overrides?: CallOverrides): Promise<BigNumber>;
+    startTimestamp(overrides?: CallOverrides): Promise<BigNumber>
 
-    token(overrides?: CallOverrides): Promise<BigNumber>;
+    token(overrides?: CallOverrides): Promise<BigNumber>
 
     transferOwnership(
       newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
 
     unlocked(
       id: BigNumberish,
       allocation: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
+      overrides?: CallOverrides,
+    ): Promise<BigNumber>
 
     withdraw(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-  };
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<BigNumber>
+  }
 
   populateTransaction: {
-    ROOT(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    ROOT(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     claimAll(
       allocations: BigNumberish[],
       proof: BytesLike[],
       targetAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
 
     claimSingle(
       roundId: BigNumberish,
       allocations: BigNumberish[],
       proof: BytesLike[],
       targetAmount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
 
     claimed(
       user: string,
       id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
 
-    getAllocations(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    getAllocations(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    getRound(
-      id: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    getRound(id: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    getRounds(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    getRounds(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     init(
       startTimestamp_: BigNumberish,
       leaves_: string,
       root_: BytesLike,
       rounds_: {
-        name: string;
+        name: string
         periods: {
-          startTimestamp: BigNumberish;
-          duration: BigNumberish;
-          linearUnits: BigNumberish;
-          percentageD: BigNumberish;
-        }[];
+          startTimestamp: BigNumberish
+          duration: BigNumberish
+          linearUnits: BigNumberish
+          percentageD: BigNumberish
+        }[]
       }[],
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
 
-    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    owner(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     renounceOwnership(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
 
     resetROOT(
       root_: BytesLike,
       leaves_: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
 
-    roundLength(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    roundLength(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    rounds(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+    rounds(arg0: BigNumberish, overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    startTimestamp(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    startTimestamp(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
-    token(overrides?: CallOverrides): Promise<PopulatedTransaction>;
+    token(overrides?: CallOverrides): Promise<PopulatedTransaction>
 
     transferOwnership(
       newOwner: string,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
 
     unlocked(
       id: BigNumberish,
       allocation: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
+      overrides?: CallOverrides,
+    ): Promise<PopulatedTransaction>
 
     withdraw(
       recipient: string,
       amount: BigNumberish,
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-  };
+      overrides?: Overrides & { from?: string | Promise<string> },
+    ): Promise<PopulatedTransaction>
+  }
 }

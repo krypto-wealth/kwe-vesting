@@ -29,7 +29,7 @@
             class="text-[15px] flex flex-col gap-4 transition duration-300"
           >
             <a
-              href="https://gotbit-kwe-presale-frontend-qa.test.gotbit.app/seed"
+              href="https://presale.kwe.network/seed"
               :class="
                 unref(router.currentRoute).fullPath === '/seed'
                   ? 'text-[#03e287]'
@@ -38,7 +38,7 @@
               >Seed Round</a
             >
             <a
-              href="https://gotbit-kwe-presale-frontend-qa.test.gotbit.app/private"
+              href="https://presale.kwe.network/private"
               :class="
                 unref(router.currentRoute).fullPath === '/private'
                   ? 'text-[#03e287]'
@@ -47,7 +47,7 @@
               >Private Round</a
             >
             <a
-              href="https://gotbit-kwe-presale-frontend-qa.test.gotbit.app/"
+              href="https://presale.kwe.network/"
               :class="
                 unref(router.currentRoute).fullPath === '/'
                   ? 'text-[#03e287]'

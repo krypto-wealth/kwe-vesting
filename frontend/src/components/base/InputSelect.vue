@@ -27,9 +27,7 @@
         @click="() => onSelect(option.value)"
       >
         <a
-          :href="`https://gotbit-kwe-presale-frontend-qa.test.gotbit.app/${
-            option.route || option.value
-          }`"
+          :href="`https://presale.kwe.network/${option.route || option.value}`"
           class="!text-[#FFFFFFCC] hover:!text-white"
           >{{ option.label }}</a
         >

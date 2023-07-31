@@ -22,6 +22,9 @@
       <GCard shadow class="flex flex-col items-center mt-4 vesting-card">
         <div class="flex items-center justify-center h-full">
           <GLoader size="100px" v-if="isAllocation" />
+          <p v-else-if="!started" class="wait-title">
+            Sorry, vesting has not started yet
+          </p>
           <p v-else class="wait-title">
             Sorry, you are not participating in any allocations
           </p>
@@ -49,6 +52,8 @@ const isAllocation = computed(() => {
     return false
   } else return true
 })
+
+const started = computed(() => 1690837200 < Math.floor(Date.now() / 1000))
 
 const web3 = useWeb3()
 </script>
